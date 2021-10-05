@@ -1,14 +1,13 @@
 package lib
 
 import (
-	"CLkey/CLKeygen"
 	"bufio"
 	"encoding/csv"
 	"encoding/gob"
 	"fmt"
+	"github.com/Mydawn2/CLkey/CLKeygen"
 	"github.com/pkg/errors"
 	"github.com/tjfoc/gmsm/sm2"
-	"github.com/xlcetc/cryptogm/sm/sm9"
 	"io"
 	"net"
 	"os"
@@ -140,15 +139,15 @@ func HandleStrings(rw *bufio.ReadWriter) {
 
 func HandleGob(rw *bufio.ReadWriter) {
 	var data CLKeygen.MSG
-	f, err := os.OpenFile("data1024.csv", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
+	f, err := os.OpenFile("data512.csv", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
 	if err != nil {
 		fmt.Println("Error: ", err)
 		return
 	}
 
 	writer := csv.NewWriter(f)
-	id := []byte("Alice")
-	hid := 3
+	//id := []byte("Alice")
+	//hid := 3
 	gob.Register(sm2.P256Sm2())
 	//start := time.Now()
 	dec := gob.NewDecoder(rw)
@@ -162,10 +161,10 @@ func HandleGob(rw *bufio.ReadWriter) {
 	plaintxt, err := data.Priv.DecryptAsn1(data.Cipher)
 	isok1 := data.Priv.PublicKey.Verify(plaintxt, data.Sm2sign)
 	elapsed := time.Since(data.Tstamp)
-	isok2 := sm9.Verify(data.Sm9sign, data.Cipher, id, byte(hid), data.Mk)
+	//isok2 := sm9.Verify(data.Sm9sign, data.Cipher, id, byte(hid), data.Mk)
 	fmt.Printf("message: %v\n", plaintxt)
 	fmt.Printf("SM2Verified: %v\n", isok1)
-	fmt.Printf("SM9Verified: %v\n", isok2)
+	//fmt.Printf("SM9Verified: %v\n", isok2)
 	fmt.Println("pure_msg transferTime：", tran_time)
 	fmt.Println("该函数执行完成耗时：", elapsed)
 	//return tran_time,elapsed,err

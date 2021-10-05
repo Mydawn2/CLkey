@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/tjfoc/gmsm/sm2"
-	"github.com/xlcetc/cryptogm/sm/sm9"
+	//"github.com/xlcetc/cryptogm/sm/sm9"
 	"log"
 	"strconv"
 	"time"
@@ -48,10 +48,10 @@ func client(ip string) error {
 	gob.Register(sm2.P256Sm2())
 	//gob.Register(sm9.)
 	//generate SM9 parameters
-	mk, _ := sm9.MasterKeyGen(rand.Reader)
-	id := []byte("Alice")
-	hid := 3
-	uk, _ := sm9.UserKeyGen(mk, id, byte(hid))
+	//mk, _ := sm9.MasterKeyGen(rand.Reader)
+	//id := []byte("Alice")
+	//hid := 3
+	//uk, _ := sm9.UserKeyGen(mk, id, byte(hid))
 	//build CertlessKey
 	s, p_kgc, _, err := Setup()
 	if err != nil {
@@ -69,18 +69,18 @@ func client(ip string) error {
 	if err != nil {
 		log.Fatal(err)
 	}
-	msg := RandUp(1024)
+	msg := RandUp(512)
 	for i := 0; i < 100; i++ {
 		start := time.Now()
 		ciphertxt, err := d_A.PublicKey.EncryptAsn1(msg, rand.Reader)
 		sign2_txt, err := d_A.Sign(rand.Reader, msg, nil)
-		sign9_txt, err := sm9.Sign(uk, &mk.MasterPubKey, ciphertxt)
+		//sign9_txt, err := sm9.Sign(uk, &mk.MasterPubKey, ciphertxt)
 		testmsg := MSG{
-			Priv:     d_A,
-			Mk:       &mk.MasterPubKey,
-			Cipher:   ciphertxt,
-			Sm2sign:  sign2_txt,
-			Sm9sign:  sign9_txt,
+			Priv: d_A,
+			//Mk:       &mk.MasterPubKey,
+			Cipher:  ciphertxt,
+			Sm2sign: sign2_txt,
+			//Sm9sign:  sign9_txt,
 			Tstamp:   start,
 			TranTime: time.Now(),
 		}

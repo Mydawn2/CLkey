@@ -1,4 +1,4 @@
-module CLkey
+module github.com/Mydawn2/CLkey
 
 go 1.15
 
