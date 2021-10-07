@@ -2,7 +2,6 @@ package CLKeygen
 
 import (
 	"crypto/elliptic"
-	"crypto/rand"
 	"github.com/tjfoc/gmsm/sm2"
 	"github.com/tjfoc/gmsm/sm3"
 	"github.com/xlcetc/cryptogm/sm/sm9"
@@ -25,7 +24,7 @@ type MSG struct {
 
 //create new curve and kgc parameters
 func Setup() (*sm2.PrivateKey, *sm2.PublicKey, elliptic.Curve, error) {
-	s, err := sm2.GenerateKey(rand.Reader)
+	s, err := sm2.GenerateKey()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -35,7 +34,7 @@ func Setup() (*sm2.PrivateKey, *sm2.PublicKey, elliptic.Curve, error) {
 }
 
 func SetUserKey() (*sm2.PrivateKey, *sm2.PublicKey, error) {
-	x_A, err := sm2.GenerateKey(rand.Reader)
+	x_A, err := sm2.GenerateKey()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -50,7 +49,7 @@ func ExtractParticialKey(uid []byte, s *sm2.PrivateKey, p_kgc, U_A *sm2.PublicKe
 	if err != nil {
 		log.Fatal(err)
 	}
-	w, err := sm2.GenerateKey(rand.Reader)
+	w, err := sm2.GenerateKey()
 	if err != nil {
 		log.Fatal(err)
 	}
